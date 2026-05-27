@@ -463,6 +463,12 @@ barba.init({
         if (DEBUG) console.log("Barba enter", data);
         return runPageEnterAnimation(data.next.container);
       },
+
+      after(data) {
+        scrollToPageTarget(data, { smooth: false });
+        lenis.start();
+      },
+      
     }
   ],
 });
@@ -505,7 +511,11 @@ function initLenis() {
   lenis = new Lenis({
     lerp: 0.165,
     wheelMultiplier: 1.25,
+    autoRaf: true,
+    stopInertiaOnNavigate: true,
   });
+
+  history.scrollRestoration = 'manual';
 
   if (hasScrollTrigger) {
     lenis.on("scroll", ScrollTrigger.update);
@@ -590,6 +600,36 @@ function initBarbaNavUpdate(data) {
     var newClassList = next.getAttribute('class') || '';
     curr.setAttribute('class', newClassList);
   });
+}
+
+function getHash(data) {
+  return data?.next?.url?.hash || window.location.hash.replace('#', '');
+}
+
+function scrollToPageTarget(data, { smooth = false } = {}) {
+  const hash = getHash(data);
+
+  lenis.resize();
+
+  if (!hash) {
+    lenis.scrollTo(0, { immediate: true, force: true });
+    return;
+  }
+
+  const id = decodeURIComponent(hash);
+  const target =
+    data.next.container.querySelector(`#${CSS.escape(id)}`) ||
+    data.next.container.querySelector(`[name="${CSS.escape(id)}"]`);
+
+  if (target) {
+    requestAnimationFrame(() => {
+      lenis.scrollTo(target, {
+        offset: -100,
+        immediate: !smooth,
+        force: true,
+      });
+    });
+  }
 }
 
 
