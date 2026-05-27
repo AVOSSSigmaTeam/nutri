@@ -464,11 +464,11 @@ barba.init({
         return runPageEnterAnimation(data.next.container);
       },
 
-      after(data) {
-        scrollToPageTarget(data, { smooth: false });
+      async after(data) {
+        await scrollToHashAfterBarba(data);
         lenis.start();
       },
-      
+
     }
   ],
 });
@@ -602,12 +602,20 @@ function initBarbaNavUpdate(data) {
   });
 }
 
-function getHash(data) {
-  return data?.next?.url?.hash || window.location.hash.replace('#', '');
-}
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve));
+async function scrollToHashAfterBarba(data) {
+  const hash = data.next.url.hash || window.location.hash.replace('#', '');
 
-function scrollToPageTarget(data, { smooth = false } = {}) {
-  const hash = getHash(data);
+  await nextFrame();
+  await nextFrame();
+
+  if (document.fonts?.ready) {
+    await document.fonts.ready;
+  }
+
+  // Let late layout shifts from images/components settle a bit.
+  await wait(80);
 
   lenis.resize();
 
@@ -617,17 +625,29 @@ function scrollToPageTarget(data, { smooth = false } = {}) {
   }
 
   const id = decodeURIComponent(hash);
-  const target =
-    data.next.container.querySelector(`#${CSS.escape(id)}`) ||
-    data.next.container.querySelector(`[name="${CSS.escape(id)}"]`);
+  const target = data.next.container.querySelector(`#${CSS.escape(id)}`);
 
-  if (target) {
-    requestAnimationFrame(() => {
-      lenis.scrollTo(target, {
-        offset: -100,
-        immediate: !smooth,
-        force: true,
-      });
+  if (!target) return;
+
+  const getY = () =>
+    target.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET();
+
+  // First jump.
+  lenis.scrollTo(getY(), {
+    immediate: true,
+    force: true,
+  });
+
+  // Correct after any final layout shift.
+  await wait(120);
+  lenis.resize();
+
+  const delta = Math.abs(target.getBoundingClientRect().top - HEADER_OFFSET());
+
+  if (delta > 2) {
+    lenis.scrollTo(getY(), {
+      immediate: true,
+      force: true,
     });
   }
 }
