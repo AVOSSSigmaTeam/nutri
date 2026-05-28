@@ -51,7 +51,7 @@ const colors = {
   "dark-BtnAnimatedArrow": "#212121"
 }
 
-const footerFlowerInstance;
+var footerFlowerInstance;
 
 // FUNCTION REGISTRY
 
