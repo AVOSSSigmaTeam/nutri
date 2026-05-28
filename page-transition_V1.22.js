@@ -482,7 +482,7 @@ barba.init({
   transitions: [
     {
       name: "default",
-      sync: true,
+      sync: false,
 
       async once(data) {
         if (DEBUG) console.log("Barba once");
