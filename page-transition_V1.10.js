@@ -51,7 +51,6 @@ const colors = {
   "dark-BtnAnimatedArrow": "#212121"
 }
 
-// var footerFlowerInstance;
 
 // FUNCTION REGISTRY
 
@@ -77,30 +76,24 @@ function initBeforeEnterFunctions(next) {
 
   if (has('[data-faq-section]')) {
     initFAQ(nextPage);
-    // initFAQSectionAnimation(nextPage);
   }
 
   if (has('[data-footer]')) {
     initFooterLinkHoverAnimation(nextPage);
-    // initFooterSignature(nextPage);
     setCopyrightYear(nextPage);
     initOpeningHours(nextPage);
-    // initFooterLogoFlowerSpin(nextPage);
   }
 
   if (has('[data-copy-email-button]')) initCopyEmailClipboard(nextPage);
 
   if (has('[data-button-hover-animation]')) initButtonHoverAnimation(nextPage);
 
-  // if (has('[data-six-card]')) initSixCardAnimations(nextPage);
-
   const pageName = nextPage.getAttribute("data-page-name") || '';
   if (DEBUG) console.log(pageName);
 
   switch (pageName) {
-    case "home":
-      // if (has('[data-steps-section]')) initStepsFlowerAnimation(nextPage);
-      break;
+    // case "home":
+    //   break;
     case "popup-build":
       initPlanPopup(nextPage);
       break;
@@ -140,60 +133,40 @@ function initAfterEnterFunctions(next) {
   // if (has('[data-something]')) initSomething();
 
   if (has('[data-faq-section]')) {
-    // initFAQ(nextPage);
     initFAQSectionAnimation(nextPage);
   }
 
   if (has('[data-footer]')) {
-    // initFooterLinkHoverAnimation(nextPage);
     initFooterSignature(nextPage);
-    // setCopyrightYear(nextPage);
-    // initOpeningHours(nextPage);
     initFooterLogoFlowerSpin(nextPage);
   }
 
-  // if (has('[data-copy-email-button]')) initCopyEmailClipboard(nextPage);
-
-  // if (has('[data-button-hover-animation]')) initButtonHoverAnimation(nextPage);
-
   if (has('[data-six-card]')) initSixCardAnimations(nextPage);
+
+  if (has('[data-marquee-track]')) initClientMarqueeAnimation(nextPage);
+
+  if (has('[data-steps-section]')) initStepsFlowerAnimation(nextPage);
 
   const pageName = nextPage.getAttribute("data-page-name") || '';
   if (DEBUG) console.log(pageName);
 
-  switch (pageName) {
-    case "home":
-      if (has('[data-steps-section]')) initStepsFlowerAnimation(nextPage);
-      break;
+  // switch (pageName) {
+    // case "home":
+    //   if (has('[data-steps-section]')) initStepsFlowerAnimation(nextPage);
+    //   break;
     // case "popup-build":
-    //   initPlanPopup(nextPage);
     //   break;
     // case "blog":
-    //   initBlogPostDate(nextPage);
-    //   initBlogPostFilter(nextPage);
-    //   initBlogPostHoverAnimation(nextPage);
     //   break;
     // case "blog-post":
-    //   initBlogPostDate(nextPage);
     //   break;
     // case "contact":
-    //   initBasicFormValidation(nextPage);
     //   break;
     // case "bmi-calc":
-    //   initBMICalculator(nextPage);
     //   break;
     // case "tdee-calc":
-    //   initTDEECalculator(nextPage);
     //   break;
-
-  };
-
-  // const formsWithoutUUID = nextPage.querySelectorAll("[data-add-uuid]");
-  // formsWithoutUUID.forEach((form) => {
-  //   formRandomUUID(form);
-  // });
-
-  // linkFormButtons(nextPage);
+  // };
 
   if (hasLenis) {
     lenis.resize();
@@ -465,7 +438,6 @@ barba.hooks.beforeEnter(data => {
 
 barba.hooks.afterLeave(() => {
   if (hasScrollTrigger) {
-    footerFlowerInstance?.kill();
     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
   }
   if (DEBUG) console.log("Barba afterLeave");
@@ -1050,22 +1022,6 @@ function initFooterLogoFlowerSpin(page) {
   const animationTrigger = page.querySelector("[data-footer]");
   const logo = page.querySelector("[data-footer-logo-flower]");
   if (!animationTrigger || !logo) return;
-
-  // const tl = gsap.fromTo(logo,{
-  //   rotation: 0,
-  // }, {
-  //   rotation: 360,
-  //   ease: "none",
-  // });
-
-  // footerFlowerInstance = ScrollTrigger.create({
-  //   animation: tl,
-  //   trigger: animationTrigger,
-  //   start: "top bottom",
-  //   end: "bottom bottom",
-  //   scrub: true,
-  //   markers: DEBUG,
-  // });
 
   ScrollTrigger.matchMedia({
     "(min-width: 992px)": function () {
@@ -1745,8 +1701,6 @@ function initNavButtonAnimation() {
     const animationElements = button.querySelectorAll("[data-button-arrow]");
     if (animationElements.length === 0) return;
 
-    // animateButtonHoverOFF(animationElements);
-
     button.addEventListener("mouseenter", () => { animateButtonHoverON(animationElements); });
     button.addEventListener("mouseleave", () => { animateButtonHoverOFF(animationElements); });
   });
@@ -1815,8 +1769,6 @@ function initButtonHoverAnimation(page) {
     const animationElements = button.querySelectorAll("[data-button-arrow]");
     if (animationElements.length === 0) return;
 
-    // animateButtonHoverOFF(animationElements);
-
     button.addEventListener("mouseenter", () => { animateButtonHoverON(animationElements); });
     button.addEventListener("mouseleave", () => { animateButtonHoverOFF(animationElements); });
   });
@@ -1863,19 +1815,48 @@ function initSixCardAnimations(page) {
 
 }
 
+function initClientMarqueeAnimation(page) {
+  const marqueeTracks = page.querySelectorAll("[data-marquee-track]");
+  if (marqueeTracks.length === 0) {
+    if (DEBUG) console.log("No marquee tracks found, skipping marquee animation initialization");
+    return;
+  }
+
+  marqueeTracks.forEach(track => {
+    const marqueeItems = track.querySelectorAll("[data-marquee-item]");
+    if (marqueeItems.length === 0) {
+      if (DEBUG) console.log("No marquee items found for this track, skipping...");
+      return;
+    }
+    marqueeItems.forEach(item => {
+      gsap.fromTo(item, {
+        x: "0%",
+      }, {
+        x: "100%",
+        duration: 45,
+        ease: "linear",
+        repeat: -1,
+        scrollTrigger: {
+          trigger: track,
+          start: "top bottom",
+          toggleActions: "play none none none",
+          markers: DEBUG,
+        }
+      });
+    });
+  });
+
+  if (DEBUG) console.log("Marquee tracks initialized");
+}
+
 // TODO handle anchor links
 
 
 // TODO init marquee animation on home page
-// TODO init step timeline animation on home page
 
 // TODO init testimonial marquee animation
-
-// TODO init six card column animation
 
 // TODO fix popup open and close animation
 
 // TODO init nav mobile menu animation
 
-
-// TODO check flower animations, they sometimes dont work when coming back to the page
