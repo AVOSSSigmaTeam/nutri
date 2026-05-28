@@ -3,6 +3,7 @@ gsap.registerPlugin(CustomEase, ScrollTrigger);
 history.scrollRestoration = "manual";
 
 let lenis = null;
+const lenisLerpValue = 0.165;
 let nextPage = document;
 let onceFunctionsInitialized = false;
 
@@ -541,7 +542,8 @@ function initLenis() {
   if (!hasLenis) return;
 
   lenis = new Lenis({
-    lerp: 0.165,
+    // lerp: 0.165,
+    lerp: lenisLerpValue,
     wheelMultiplier: 1.25,
   });
 
@@ -738,6 +740,9 @@ function scrollToPendingAnchor(container) {
     lenis.scrollTo(target, {
       offset,
       // duration: reducedMotion ? 0 : 1.1,
+      // lerp: reducedMotion ? 1 : lenisLerpValue,
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       immediate: reducedMotion,
       force: true
     });
