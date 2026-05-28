@@ -506,8 +506,6 @@ function initLenis() {
   lenis = new Lenis({
     lerp: 0.165,
     wheelMultiplier: 1.25,
-    autoRaf: true,
-    stopInertiaOnNavigate: true,
   });
 
   history.scrollRestoration = 'manual';
