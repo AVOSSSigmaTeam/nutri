@@ -77,29 +77,29 @@ function initBeforeEnterFunctions(next) {
 
   if (has('[data-faq-section]')) {
     initFAQ(nextPage);
-    initFAQSectionAnimation(nextPage);
+    // initFAQSectionAnimation(nextPage);
   }
 
   if (has('[data-footer]')) {
     initFooterLinkHoverAnimation(nextPage);
-    initFooterSignature(nextPage);
+    // initFooterSignature(nextPage);
     setCopyrightYear(nextPage);
     initOpeningHours(nextPage);
-    initFooterLogoFlowerSpin(nextPage);
+    // initFooterLogoFlowerSpin(nextPage);
   }
 
   if (has('[data-copy-email-button]')) initCopyEmailClipboard(nextPage);
 
   if (has('[data-button-hover-animation]')) initButtonHoverAnimation(nextPage);
 
-  if (has('[data-six-card]')) initSixCardAnimations(nextPage);
+  // if (has('[data-six-card]')) initSixCardAnimations(nextPage);
 
   const pageName = nextPage.getAttribute("data-page-name") || '';
   if (DEBUG) console.log(pageName);
 
   switch (pageName) {
     case "home":
-      if (has('[data-steps-section]')) initStepsFlowerAnimation(nextPage);
+      // if (has('[data-steps-section]')) initStepsFlowerAnimation(nextPage);
       break;
     case "popup-build":
       initPlanPopup(nextPage);
@@ -139,13 +139,61 @@ function initAfterEnterFunctions(next) {
   // Runs after enter animation completes
   // if (has('[data-something]')) initSomething();
 
+  if (has('[data-faq-section]')) {
+    // initFAQ(nextPage);
+    initFAQSectionAnimation(nextPage);
+  }
+
   if (has('[data-footer]')) {
     // initFooterLinkHoverAnimation(nextPage);
-    // initFooterSignature(nextPage);
+    initFooterSignature(nextPage);
     // setCopyrightYear(nextPage);
     // initOpeningHours(nextPage);
     initFooterLogoFlowerSpin(nextPage);
   }
+
+  // if (has('[data-copy-email-button]')) initCopyEmailClipboard(nextPage);
+
+  // if (has('[data-button-hover-animation]')) initButtonHoverAnimation(nextPage);
+
+  if (has('[data-six-card]')) initSixCardAnimations(nextPage);
+
+  const pageName = nextPage.getAttribute("data-page-name") || '';
+  if (DEBUG) console.log(pageName);
+
+  switch (pageName) {
+    case "home":
+      if (has('[data-steps-section]')) initStepsFlowerAnimation(nextPage);
+      break;
+    // case "popup-build":
+    //   initPlanPopup(nextPage);
+    //   break;
+    // case "blog":
+    //   initBlogPostDate(nextPage);
+    //   initBlogPostFilter(nextPage);
+    //   initBlogPostHoverAnimation(nextPage);
+    //   break;
+    // case "blog-post":
+    //   initBlogPostDate(nextPage);
+    //   break;
+    // case "contact":
+    //   initBasicFormValidation(nextPage);
+    //   break;
+    // case "bmi-calc":
+    //   initBMICalculator(nextPage);
+    //   break;
+    // case "tdee-calc":
+    //   initTDEECalculator(nextPage);
+    //   break;
+
+  };
+
+  // const formsWithoutUUID = nextPage.querySelectorAll("[data-add-uuid]");
+  // formsWithoutUUID.forEach((form) => {
+  //   formRandomUUID(form);
+  // });
+
+  // linkFormButtons(nextPage);
 
   if (hasLenis) {
     lenis.resize();
