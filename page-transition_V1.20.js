@@ -739,10 +739,11 @@ function scrollToPendingAnchor(container) {
   if (lenis && typeof lenis.scrollTo === "function") {
     lenis.scrollTo(target, {
       offset,
-      duration: reducedMotion ? 0 : 5,
+      // duration: reducedMotion ? 0 : 5,
       // lerp: reducedMotion ? 1 : lenisLerpValue,
       // easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      immediate: reducedMotion,
+      // immediate: reducedMotion,
+      immediate: true,
       force: true
     });
   } else {
