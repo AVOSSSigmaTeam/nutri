@@ -1479,12 +1479,12 @@ function initBMICalculator(page) {
     let inidicatorText = "";
 
     switch (true) {
-      case (BMI < 16):
-        inidicatorText = "Patološka pothranjenost";
-        break;
-      case (BMI < 18):
-        inidicatorText = "Ozbiljna pothranjenost";
-        break;
+      // case (BMI < 16):
+      //   inidicatorText = "Patološka pothranjenost";
+      //   break;
+      // case (BMI < 18):
+      //   inidicatorText = "Ozbiljna pothranjenost";
+      //   break;
       case (BMI < 18.5):
         inidicatorText = "Pothranjenost";
         break;
@@ -1814,7 +1814,6 @@ function initSixCardAnimations(page) {
   });
 
   if (DEBUG) console.log("Six card animation initialized");
-
 }
 
 function initClientMarqueeAnimation(page) {
@@ -1886,11 +1885,8 @@ function initTestimonialMarqueeAnimation(page) {
 
 // TODO handle anchor links
 
-
-
-// TODO init testimonial marquee animation
-
 // TODO fix popup open and close animation
 
 // TODO init nav mobile menu animation
 
+// TODO modify BMI calc to have only one under category <18.5
