@@ -51,6 +51,8 @@ const colors = {
   "dark-BtnAnimatedArrow": "#212121"
 }
 
+const footerFlowerInstance;
+
 // FUNCTION REGISTRY
 
 function initOnceFunctions() {
@@ -402,11 +404,12 @@ barba.hooks.beforeEnter(data => {
   initBeforeEnterFunctions(data.next.container);
   applyThemeFrom(data.next.container);
 
-  if (DEBUG) console.log("Barba beforeEnter", data);
+  if (DEBUG) console.log("Barba beforeEnter");
 });
 
 barba.hooks.afterLeave(() => {
   if (hasScrollTrigger) {
+    footerFlowerInstance?.kill();
     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
   }
   if (DEBUG) console.log("Barba afterLeave");
@@ -414,7 +417,7 @@ barba.hooks.afterLeave(() => {
 
 barba.hooks.enter(data => {
   initBarbaNavUpdate(data);
-  if (DEBUG) console.log("Barba enter hook", data);
+  if (DEBUG) console.log("Barba enter hook");
 })
 
 barba.hooks.afterEnter(data => {
@@ -431,7 +434,7 @@ barba.hooks.afterEnter(data => {
   if (hasScrollTrigger) {
     ScrollTrigger.refresh();
   }
-  if (DEBUG) console.log("Barba afterEnter", data);
+  if (DEBUG) console.log("Barba afterEnter");
 
 });
 
@@ -445,7 +448,7 @@ barba.init({
       sync: true,
 
       async once(data) {
-        if (DEBUG) console.log("Barba once", data);
+        if (DEBUG) console.log("Barba once");
         initOnceFunctions();
         applyThemeFrom(data.next.container);
 
@@ -454,13 +457,13 @@ barba.init({
 
       // Current page leaves
       async leave(data) {
-        if (DEBUG) console.log("Barba leave", data);
+        if (DEBUG) console.log("Barba leave");
         return runPageLeaveAnimation(data.current.container, data.next.container);
       },
 
       // New page enters
       async enter(data) {
-        if (DEBUG) console.log("Barba enter", data);
+        if (DEBUG) console.log("Barba enter");
         return runPageEnterAnimation(data.next.container);
       },
 
@@ -992,26 +995,41 @@ function initFooterLogoFlowerSpin(page) {
   const logo = page.querySelector("[data-footer-logo-flower]");
   if (!animationTrigger || !logo) return;
 
-  ScrollTrigger.matchMedia({
-    "(min-width: 992px)": function () {
-      gsap.fromTo(
-        logo,
-        {
-          rotation: 0,
-        },
-        {
-          rotation: 360,
-          ease: "none",
-          scrollTrigger: {
-            trigger: animationTrigger,
-            start: "top bottom",
-            end: "bottom bottom",
-            scrub: true,
-          },
-        }
-      );
-    },
+  const tl = gsap.fromTo(logo,{
+    rotation: 0,
+  }, {
+    rotation: 360,
+    ease: "none",
   });
+
+  footerFlowerInstance = ScrollTrigger.create({
+    animation: tl,
+    trigger: animationTrigger,
+    start: "top bottom",
+    end: "bottom bottom",
+    scrub: true,
+  });
+
+  // ScrollTrigger.matchMedia({
+  //   "(min-width: 992px)": function () {
+  //     gsap.fromTo(
+  //       logo,
+  //       {
+  //         rotation: 0,
+  //       },
+  //       {
+  //         rotation: 360,
+  //         ease: "none",
+  //         scrollTrigger: {
+  //           trigger: animationTrigger,
+  //           start: "top bottom",
+  //           end: "bottom bottom",
+  //           scrub: true,
+  //         },
+  //       }
+  //     );
+  //   },
+  // });
 
   if (DEBUG) console.log("Footer logo flower spin initialized");
 
