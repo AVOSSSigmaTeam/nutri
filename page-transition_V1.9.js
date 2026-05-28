@@ -51,7 +51,7 @@ const colors = {
   "dark-BtnAnimatedArrow": "#212121"
 }
 
-var footerFlowerInstance;
+// var footerFlowerInstance;
 
 // FUNCTION REGISTRY
 
@@ -1051,42 +1051,42 @@ function initFooterLogoFlowerSpin(page) {
   const logo = page.querySelector("[data-footer-logo-flower]");
   if (!animationTrigger || !logo) return;
 
-  const tl = gsap.fromTo(logo,{
-    rotation: 0,
-  }, {
-    rotation: 360,
-    ease: "none",
-  });
-
-  footerFlowerInstance = ScrollTrigger.create({
-    animation: tl,
-    trigger: animationTrigger,
-    start: "top bottom",
-    end: "bottom bottom",
-    scrub: true,
-    markers: DEBUG,
-  });
-
-  // ScrollTrigger.matchMedia({
-  //   "(min-width: 992px)": function () {
-  //     gsap.fromTo(
-  //       logo,
-  //       {
-  //         rotation: 0,
-  //       },
-  //       {
-  //         rotation: 360,
-  //         ease: "none",
-  //         scrollTrigger: {
-  //           trigger: animationTrigger,
-  //           start: "top bottom",
-  //           end: "bottom bottom",
-  //           scrub: true,
-  //         },
-  //       }
-  //     );
-  //   },
+  // const tl = gsap.fromTo(logo,{
+  //   rotation: 0,
+  // }, {
+  //   rotation: 360,
+  //   ease: "none",
   // });
+
+  // footerFlowerInstance = ScrollTrigger.create({
+  //   animation: tl,
+  //   trigger: animationTrigger,
+  //   start: "top bottom",
+  //   end: "bottom bottom",
+  //   scrub: true,
+  //   markers: DEBUG,
+  // });
+
+  ScrollTrigger.matchMedia({
+    "(min-width: 992px)": function () {
+      gsap.fromTo(
+        logo,
+        {
+          rotation: 0,
+        },
+        {
+          rotation: 360,
+          ease: "none",
+          scrollTrigger: {
+            trigger: animationTrigger,
+            start: "top bottom",
+            end: "bottom bottom",
+            scrub: true,
+          },
+        }
+      );
+    },
+  });
 
   if (DEBUG) console.log("Footer logo flower spin initialized");
 
