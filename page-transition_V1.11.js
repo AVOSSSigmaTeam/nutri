@@ -147,6 +147,8 @@ function initAfterEnterFunctions(next) {
 
   if (has('[data-steps-section]')) initStepsFlowerAnimation(nextPage);
 
+  if (has('[data-testimonial-marquee-section]')) initTestimonialMarqueeAnimation(nextPage);
+
   const pageName = nextPage.getAttribute("data-page-name") || '';
   if (DEBUG) console.log(pageName);
 
@@ -1849,10 +1851,42 @@ function initClientMarqueeAnimation(page) {
   if (DEBUG) console.log("Marquee tracks initialized");
 }
 
+function initTestimonialMarqueeAnimation(page) {
+  const testimonialMarqueeSection = page.querySelectorAll("[data-testimonial-marquee-section]");
+  if (testimonialMarqueeSection.length === 0) {
+    if (DEBUG) console.log("No testimonial marquee section found, skipping testimonial marquee animation initialization");
+    return;
+  }
+  testimonialMarqueeSection.forEach(section => {
+    const marqueeItems = section.querySelectorAll("[data-testimonial-marquee-item]");
+    if (marqueeItems.length === 0) {
+      if (DEBUG) console.log("No testimonial marquee items found for this section, skipping...");
+      return;
+    }
+    marqueeItems.forEach(item => {
+      gsap.fromTo(item, {
+        x: "0%",
+      }, {
+        x: "100%",
+        duration: 30,
+        ease: "linear",
+        repeat: -1,
+        scrollTrigger: {
+          trigger: section,
+          start: "top bottom",
+          toggleActions: "play none none none",
+          markers: DEBUG,
+        }
+      });
+    });
+  });
+
+  if (DEBUG) console.log("Testimonial marquee tracks initialized");
+}
+
 // TODO handle anchor links
 
 
-// TODO init marquee animation on home page
 
 // TODO init testimonial marquee animation
 
