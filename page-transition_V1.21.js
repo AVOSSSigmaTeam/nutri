@@ -198,7 +198,7 @@ function normalizePaths(paths) {
   };
 }
 
-function runPageEnterAnimation(next) {
+async function runPageEnterAnimation(next) {
   const transitionWrap = document.querySelector("[data-transition-wrap]");
   const transitionPanel = transitionWrap.querySelector("[data-transition-panel]");
   const transitionPanelTop = transitionWrap.querySelector("[data-transition-panel-top]");
@@ -207,6 +207,8 @@ function runPageEnterAnimation(next) {
   const transitionLogoPath = transitionWrap.querySelectorAll("path");
 
   const getY = normalizePaths(transitionLogoPath);
+
+  await resetPage(next);
 
   const tl = gsap.timeline();
 
@@ -268,7 +270,7 @@ function runPageEnterAnimation(next) {
   }, ">");
 
   tl.add("pageReady");
-  tl.call(resetPage, [next], "pageReady");
+  // tl.call(resetPage, [next], "pageReady");
 
   return new Promise(resolve => {
     tl.call(resolve, [], "pageReady");
@@ -594,7 +596,30 @@ function initLenis() {
 
 //   if (DEBUG) console.log("Page reset");
 // }
-function resetPage(container) {
+// function resetPage(container) {
+//   window.scrollTo(0, 0);
+
+//   gsap.set(container, {
+//     clearProps: "position,left,right,transform"
+//   });
+
+//   if (hasLenis) {
+//     lenis.resize();
+//     lenis.start();
+//   }
+
+//   requestAnimationFrame(() => {
+//     requestAnimationFrame(() => {
+//       if (hasLenis) lenis.resize();
+//       if (hasScrollTrigger) ScrollTrigger.refresh();
+
+//       scrollToPendingAnchor(container);
+//     });
+//   });
+
+//   if (DEBUG) console.log("Page reset");
+// }
+function resetPage(container, { scrollAnchor = true } = {}) {
   window.scrollTo(0, 0);
 
   gsap.set(container, {
@@ -606,15 +631,20 @@ function resetPage(container) {
     lenis.start();
   }
 
-  requestAnimationFrame(() => {
+  return new Promise(resolve => {
     requestAnimationFrame(() => {
-      if (hasLenis) lenis.resize();
-      if (hasScrollTrigger) ScrollTrigger.refresh();
+      requestAnimationFrame(() => {
+        if (hasLenis) lenis.resize();
+        if (hasScrollTrigger) ScrollTrigger.refresh();
 
-      scrollToPendingAnchor(container);
+        if (scrollAnchor) {
+          scrollToPendingAnchor(container);
+        }
+
+        resolve();
+      });
     });
   });
-
   if (DEBUG) console.log("Page reset");
 }
 
