@@ -139,6 +139,14 @@ function initAfterEnterFunctions(next) {
   // Runs after enter animation completes
   // if (has('[data-something]')) initSomething();
 
+  if (has('[data-footer]')) {
+    // initFooterLinkHoverAnimation(nextPage);
+    // initFooterSignature(nextPage);
+    // setCopyrightYear(nextPage);
+    // initOpeningHours(nextPage);
+    initFooterLogoFlowerSpin(nextPage);
+  }
+
   if (hasLenis) {
     lenis.resize();
   }
