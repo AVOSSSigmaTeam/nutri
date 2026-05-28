@@ -464,11 +464,6 @@ barba.init({
         return runPageEnterAnimation(data.next.container);
       },
 
-      async after(data) {
-        await scrollToHashAfterBarba(data);
-        lenis.start();
-      },
-
     }
   ],
 });
@@ -600,56 +595,6 @@ function initBarbaNavUpdate(data) {
     var newClassList = next.getAttribute('class') || '';
     curr.setAttribute('class', newClassList);
   });
-}
-
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve));
-async function scrollToHashAfterBarba(data) {
-  const hash = data.next.url.hash || window.location.hash.replace('#', '');
-
-  await nextFrame();
-  await nextFrame();
-
-  if (document.fonts?.ready) {
-    await document.fonts.ready;
-  }
-
-  // Let late layout shifts from images/components settle a bit.
-  await wait(80);
-
-  lenis.resize();
-
-  if (!hash) {
-    lenis.scrollTo(0, { immediate: true, force: true });
-    return;
-  }
-
-  const id = decodeURIComponent(hash);
-  const target = data.next.container.querySelector(`#${CSS.escape(id)}`);
-
-  if (!target) return;
-
-  const getY = () =>
-    target.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET();
-
-  // First jump.
-  lenis.scrollTo(getY(), {
-    immediate: true,
-    force: true,
-  });
-
-  // Correct after any final layout shift.
-  await wait(120);
-  lenis.resize();
-
-  const delta = Math.abs(target.getBoundingClientRect().top - HEADER_OFFSET());
-
-  if (delta > 2) {
-    lenis.scrollTo(getY(), {
-      immediate: true,
-      force: true,
-    });
-  }
 }
 
 
