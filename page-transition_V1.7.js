@@ -1008,6 +1008,7 @@ function initFooterLogoFlowerSpin(page) {
     start: "top bottom",
     end: "bottom bottom",
     scrub: true,
+    markers: DEBUG,
   });
 
   // ScrollTrigger.matchMedia({
@@ -1688,7 +1689,7 @@ function initNavButtonAnimation() {
     const animationElements = button.querySelectorAll("[data-button-arrow]");
     if (animationElements.length === 0) return;
 
-    animateButtonHoverOFF(animationElements);
+    // animateButtonHoverOFF(animationElements);
 
     button.addEventListener("mouseenter", () => { animateButtonHoverON(animationElements); });
     button.addEventListener("mouseleave", () => { animateButtonHoverOFF(animationElements); });
@@ -1758,7 +1759,7 @@ function initButtonHoverAnimation(page) {
     const animationElements = button.querySelectorAll("[data-button-arrow]");
     if (animationElements.length === 0) return;
 
-    animateButtonHoverOFF(animationElements);
+    // animateButtonHoverOFF(animationElements);
 
     button.addEventListener("mouseenter", () => { animateButtonHoverON(animationElements); });
     button.addEventListener("mouseleave", () => { animateButtonHoverOFF(animationElements); });
