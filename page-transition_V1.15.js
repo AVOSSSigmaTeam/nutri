@@ -737,7 +737,7 @@ function scrollToPendingAnchor(container) {
   if (lenis && typeof lenis.scrollTo === "function") {
     lenis.scrollTo(target, {
       offset,
-      duration: reducedMotion ? 0 : 1.1,
+      // duration: reducedMotion ? 0 : 1.1,
       immediate: reducedMotion,
       force: true
     });
